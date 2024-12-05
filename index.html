@@ -344,4 +344,147 @@ jumlahKlik = 0;sudah=false;
     tombol.style.position = "relative";
     tombol.style.left = tombolPosisiX + "px";
     tombol.style.top = tombolPosisiY + "px";
-    tombol.style.transform = "rotate(" + rotasiAcak + "
+    tombol.style.transform = "rotate(" + rotasiAcak + "deg)";
+    tombolParent.appendChild(tombol);
+
+    jumlahKlik++;
+
+    if(jumlahKlik == 3){
+        swiper.slideNext();
+        jumlahKlik=0;
+    }
+  }
+
+//////
+
+function fungsiTerima() {
+    Swal.fire({
+        title: '' + teksTerima.innerHTML,
+        imageUrl: '' + stikerTerima.src,
+        imageWidth: 90,
+        imageHeight: 90,
+        imageAlt: 'by Feeldream.id',
+        confirmButtonText: 'OK',
+        allowOutsideClick: false,
+    });
+}
+/////////////////////////
+
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space' || event.code === 'ArrowRight') {
+        swiper.slideNext();
+    }
+});
+
+document.addEventListener('click', function() {
+    if (teksSekarang < 3) {
+    	if (fungsiBerfungsi === true) {
+           swiper.slideNext();
+        }
+    }
+});
+</script>
+<script>
+	  const cards = document.querySelectorAll(".card");
+      const gameBoard = document.querySelector(".game-board");
+      
+      let hasFlippedCard = false;
+      let lockBoard = false;
+      let firstCard, secondCard;
+      let matchedPairs = 0;
+
+      function startGame() {
+        cards.forEach(card => {
+          card.style.animation = "appear .9s forwards";
+        });
+        shuffle();
+      }
+
+      function flipCard() {
+        if (lockBoard) return;
+        if (this === firstCard) return;
+
+        this.classList.add("flipped");
+        this.textContent = this.dataset.emoji;
+
+        if (!hasFlippedCard) {
+          hasFlippedCard = true;
+          firstCard = this;
+          return;
+        }
+
+        secondCard = this;
+        checkForMatch();
+      }
+
+      function checkForMatch() {
+        let isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
+        isMatch ? disableCards() : unflipCards();
+      }
+
+      function disableCards() {
+        firstCard.removeEventListener("click", flipCard);
+        secondCard.removeEventListener("click", flipCard);
+
+        matchedPairs++;
+        if (matchedPairs === 8) {
+          endGame();
+        }
+
+        resetBoard();
+      }
+
+      function unflipCards() {
+        lockBoard = true;
+
+        setTimeout(() => {
+          firstCard.classList.remove("flipped");
+          secondCard.classList.remove("flipped");
+          firstCard.textContent = "";
+          secondCard.textContent = "";
+
+          resetBoard();
+        }, 1000);
+      }
+
+      function resetBoard() {
+        [hasFlippedCard, lockBoard] = [false, false];
+        [firstCard, secondCard] = [null, null];
+      }
+
+      function endGame() {
+	    setTimeout(() => {
+		    document.querySelector(".main-card").style = "transform:scale(0);opacity:0 !important;transition:all .7s ease";
+		    stikerScale = document.querySelector('#stiker4');
+		    teksScale = document.querySelector('#teks4');
+		
+		    setTimeout(() => {
+	            document.querySelector(".main-card").style.display = "none";
+	            
+	            scrollContainer.classList.remove("abs");
+	            scrollContainer.classList.remove("scale0");
+	            scrollContainer.classList.add("scale1");
+	
+	            setTimeout(function(){
+		            stikerScale.classList.remove("abs");
+		            stikerScale.classList.remove("scale0");
+		            stikerScale.classList.add("scale1");
+		
+		            setTimeout(katanimasi, 100);
+	            }, 200);
+
+	        }, 400);
+	    }, 400);
+	  }
+
+      function shuffle() {
+        cards.forEach(card => {
+          let randomPos = Math.floor(Math.random() * 16);
+          //card.style.order = randomPos;
+        });
+      }
+
+      cards.forEach(card => card.addEventListener("click", flipCard));
+</script>
+</body>
+</html>
